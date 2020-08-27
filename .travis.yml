@@ -1,0 +1,12 @@
+# See http://about.travis-ci.org/docs/user/build-configuration/ 
+dist: bionic
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t vlc .
+      - docker images
+      - docker tag vlc $DOCKER_USERNAME/vlc
+      - docker push $DOCKER_USERNAME/vlc
